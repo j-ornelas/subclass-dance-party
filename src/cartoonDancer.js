@@ -2,7 +2,7 @@ var CartoonDancer = function(top, left, timeBetweenSteps) {
   Dancer.call(this, top, left, timeBetweenSteps);
   this.dancerList = [{
     src: 'assets/cartoon.gif',
-    height: 200
+    height: 75
   }];
   this.$node.addClass('cartoon');
   // call the old version of step at the beginning of any call to this new version of step

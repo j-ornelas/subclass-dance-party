@@ -1,10 +1,9 @@
-var Dancer = function(bot, left, timeBetweenSteps) {
+var Dancer = function(y, x, timeBetweenSteps) {
   this.$node = $('<span class="dancer"></span>');
   this.timeBetweenSteps = timeBetweenSteps;
   this.step();
-  this.bot = bot;
-  this.left = left;
-  this.setPosition(bot, left);
+  this.coords = new Coordinates(y, x);
+  this.setPosition(y, x);
   this.$node.css('z-index', -1);
   this.interact = true;
   this.center = new Coordinates();
@@ -23,21 +22,23 @@ Dancer.prototype.step = function() {
 Dancer.prototype.moveToCluster = function() {
   //iterate through dancers array
   // bot + y - bot / 5;
-  this.bot = this.bot + (this.center.y - this.bot) / 5;
-  this.left = this.left + (this.center.x - this.left) / 5;
-  this.setPosition(this.bot, this.left);
+  if (distance(this.coords, this.center) > 50) {
+    this.coords.y = this.coords.y + (this.center.y - this.coords.y) / 5;
+    this.coords.x = this.coords.x + (this.center.x - this.coords.x) / 5;
+    this.setPosition(this.coords.y, this.coords.x);
+  }
 };
 
-Dancer.prototype.setPosition = function(bot, left) {
+Dancer.prototype.setPosition = function(y, x) {
   // Use css bot and left properties to position our <span> tag
   // where it belongs on the page. See http://api.jquery.com/css/
   //
-  this.bot = bot;
-  this.left = left;
+  this.coords.y = y;
+  this.coords.x = x;
 
   var styleSettings = {
-    bottom: this.bot,
-    left: this.left
+    bottom: this.coords.y,
+    left: this.coords.x
   };
 
   this.$node.css(styleSettings);
