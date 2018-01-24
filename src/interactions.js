@@ -3,8 +3,39 @@ var lineUp = function() {
   var offset = $('body').width() / window.dancers.length;
   for (var i = 0; i < window.dancers.length; i++) {
     window.dancers[i].cluster = false;
+    window.dancers[i].conga = false;
     window.dancers[i].setPosition(0, offset * i);
   }
+};
+
+var populate = function() {
+  for (var i = 0; i < 20; i++) {
+
+    if (i % 2 === 0) {
+      var dancerMakerFunction = HumanDancer;
+    } else {
+      var dancerMakerFunction = CartoonDancer;
+    }
+
+    var dancer = new dancerMakerFunction(
+      $('body').height() * Math.random() * .8,
+      $('body').width() * Math.random(),
+      Math.random() * 500 + 500
+    );
+    $('body').append(dancer.$node);
+    window.dancers.push(dancer);
+    window.dancers[window.dancers.length - 1].$node.css('z-index', -window.dancers.length);
+  }
+};
+
+var conga = function() {
+  for (var i = 1; i < window.dancers.length; i++) {
+    window.dancers[i].cluster = false;
+    window.dancers[i].conga = true;
+    window.dancers[i].target = window.dancers[i - 1].coords;
+  }
+  window.dancers[0].conga = true;
+  window.dancers[0].target = window.currentMousePos;
 };
 
 var cluster = function() {
@@ -15,6 +46,7 @@ var cluster = function() {
 
   //initializes clusters as empty arrays
 
+  //HELPER FUNCTIONS: ------------
   //closure counter to loop through clusterList for dancer assignment
   var loopCounter = function(max) {
     index = 0;
@@ -39,6 +71,7 @@ var cluster = function() {
       y /= clusterList[i].length;
       x /= clusterList[i].length;
       clusterList[i].center = new Coordinates(y, x);
+      clusterList[i].spotlight = new Spotlight();
     }
   };
 
@@ -59,7 +92,7 @@ var cluster = function() {
         let dist = distance(window.dancers[i].coords, clusterList[j].center);
         if (dist < minDistance) {
           minDistance = dist;
-          closestIndex = j;          
+          closestIndex = j;
         }
       }
       clusterList[closestIndex].push(window.dancers[i]);
@@ -79,6 +112,8 @@ var cluster = function() {
     setTimeout(update, 1000);
   };
 
+  //HELPER FUNCTIONS END: ---------
+
   for (var i = 0; i < numClusters; i++) {
     clusterList[i] = [];
   }
@@ -91,6 +126,7 @@ var cluster = function() {
 
   for (var i = 0; i < window.dancers.length; i++) {
     window.dancers[i].cluster = true;
+    window.dancers[i].conga = false;
   }
 };
 
@@ -101,4 +137,10 @@ var distance = function(coords1, coords2) {
 var Coordinates = function(y, x) {
   this.x = x;
   this.y = y;
+};
+
+var addPoint = function(coords, color) {
+  var point = new Dancer(coords.y, coords.x);
+  point.$node.css('color', color);
+  $('body').append(point.$node);
 };
