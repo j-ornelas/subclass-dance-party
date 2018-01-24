@@ -13,10 +13,12 @@ describe('cartoonDancer', function() {
     expect(cartoonDancer.$node).to.be.an.instanceof(jQuery);
   });
 
-  it('should have a step function that makes its node blink', function() {
-    sinon.spy(cartoonDancer.$node, 'toggle');
-    cartoonDancer.step();
-    expect(cartoonDancer.$node.toggle.called).to.be.true;
+
+  it('should add cartoon dancer with given coordinates', function() {
+    var testDancer = new CartoonDancer(50, 10, 200);
+    
+    expect(testDancer.coords.y).to.be.equal(50);
+    expect(testDancer.coords.x).to.be.equal(10);
   });
 
   describe('dance', function() {
