@@ -36,3 +36,10 @@ body, a:link, a:visited, a:active{
 .dancer.human {
   border:0px;
 }
+
+.spotlight {
+  border: 10px solid red;
+  border-radius: 5px;
+  position: absolute;
+  transition-duration: 1s;
+}

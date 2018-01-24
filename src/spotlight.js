@@ -1,11 +1,11 @@
 var Spotlight = function() {
   this.$node = $('<span class="spotlight"></span>');
-  this.coords = new Coordinates(y, x);
+  this.coords = new Coordinates();
+  $('body').append(this.$node);
 };
 
-Spotlight.prototype.setPosition = function() {
-  this.coords.y = y;
-  this.coords.x = x;
+Spotlight.prototype.setPosition = function(coords) {
+  this.coords = coords;
 
   var styleSettings = {
     bottom: this.coords.y,

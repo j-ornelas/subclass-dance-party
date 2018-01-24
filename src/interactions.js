@@ -71,7 +71,9 @@ var cluster = function() {
       y /= clusterList[i].length;
       x /= clusterList[i].length;
       clusterList[i].center = new Coordinates(y, x);
-      clusterList[i].spotlight = new Spotlight();
+      if (clusterList[i].spotlight === undefined) {
+        clusterList[i].spotlight = new Spotlight();
+      }
     }
   };
 
@@ -80,8 +82,11 @@ var cluster = function() {
     //empty clusters of dancers but keep center value
     for (var i = 0; i < clusterList.length; i++) {
       var temp = clusterList[i].center;
+      var tempSpotlight = clusterList[i].spotlight;
+
       clusterList[i] = [];
       clusterList[i].center = temp;
+      clusterList[i].spotlight = tempSpotlight;
     }
     //loop through dancers
     for (var i = 0; i < window.dancers.length; i++) {
@@ -104,7 +109,8 @@ var cluster = function() {
     findCenters();
     assignClusters();
     //update centers for each dancer
-    for (var i = 0; i < clusterList.length; i++) { 
+    for (var i = 0; i < clusterList.length; i++) {
+      clusterList[i].spotlight.setPosition(clusterList[i].center); 
       for (var j = 0; j < clusterList[i].length; j++) {
         clusterList[i][j].center = clusterList[i].center;
       }
